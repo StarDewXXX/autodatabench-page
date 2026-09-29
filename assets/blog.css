@@ -1,0 +1,234 @@
+/* Shared styling for the paper write-ups.
+   Kept in one file rather than inlined per page: the palette is the homepage's,
+   and a colour that has to be changed in four places eventually is changed in
+   three. Variables carry the values the homepage uses literally. */
+
+:root {
+    --ink:      #1a1a1a;
+    --body:     #333;
+    --muted:    #666;
+    --faint:    #888;
+    --rule:     #e8e8e8;
+    --wash:     #f8f9fa;
+    --wash-2:   #eef1f3;     /* one step down from the ground, for a marked table row */
+    --accent:   #0066cc;
+    --measure:  42rem;       /* ~70 characters, the line length prose reads best at */
+    --serif:    Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif;
+    --sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    /* Chinese needs its own stack: the Latin serifs above have no CJK coverage, so a
+       page set in them falls back per-glyph and the result is visibly mixed. */
+    --serif-zh: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+                "Hiragino Sans GB", serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+/* The page sits on the homepage's own wash rather than on pure white, and the
+   discrete blocks (takeaways, figures, the stat grid) stay white so they lift
+   off it. That is where the depth comes from: a tonal ground and white
+   surfaces, which is what the sites worth copying do instead of a texture. */
+body {
+    font-family: var(--serif);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--body);
+    background: var(--wash);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- progress */
+/* A hairline, not a bar. It tells you where you are without asking to be read. */
+.progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: var(--accent); z-index: 100;
+    transition: width .1s linear;
+}
+
+/* ------------------------------------------------------------------- shell */
+.wrap { max-width: var(--measure); margin: 0 auto; padding: 0 1.5rem; }
+
+.back {
+    font-family: var(--sans); font-size: .8125rem; color: var(--faint);
+    text-decoration: none; letter-spacing: .02em;
+}
+.back:hover { color: var(--accent); }
+
+/* -------------------------------------------------------------------- head */
+.head {
+    padding: 5rem 0 3.5rem; border-bottom: 1px solid var(--rule);
+}
+.eyebrow {
+    font-family: var(--sans); font-size: .75rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint); margin-bottom: 1.25rem;
+}
+.head h1 {
+    font-size: 2.25rem; line-height: 1.25; font-weight: 600;
+    color: var(--ink); letter-spacing: -.015em; margin-bottom: 1rem;
+}
+.standfirst { font-size: 1.1875rem; color: var(--muted); line-height: 1.6; }
+.byline {
+    font-family: var(--sans); font-size: .8125rem; color: var(--faint);
+    margin-top: 1.75rem;
+}
+.byline a { color: var(--accent); text-decoration: none; }
+.byline a:hover { text-decoration: underline; }
+
+/* ------------------------------------------------------------------- prose */
+article { padding: 3.5rem 0 6rem; }
+article > * + * { margin-top: 1.5rem; }
+
+h2 {
+    font-family: var(--sans); font-size: 1.0625rem; font-weight: 600;
+    color: var(--ink); letter-spacing: -.005em;
+    margin-top: 3.5rem; padding-top: .25rem;
+}
+h2 + p { margin-top: .875rem; }
+
+p strong { font-weight: 600; color: var(--ink); }
+a { color: var(--accent); }
+
+.lede::first-letter {
+    float: left; font-size: 3.25rem; line-height: .85;
+    padding: .1em .08em 0 0; font-weight: 600; color: var(--ink);
+}
+
+/* ------------------------------------------------------------------ figures */
+/* Figures break the measure; prose does not. A diagram that is readable at
+   42rem is not readable at all, and the caption is what ties it back. */
+figure { margin: 3rem calc(50% - 50vw); padding: 0 1.5rem; text-align: center; }
+figure img {
+    max-width: min(54rem, 100%); width: 100%; height: auto;
+    background: #fff;        /* the figures with transparent ground need it now */
+    border: 1px solid var(--rule); border-radius: 2px;
+}
+figcaption {
+    font-family: var(--sans); font-size: .8125rem; color: var(--faint);
+    max-width: var(--measure); margin: 1rem auto 0; text-align: left;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------------------- takeaways */
+.takeaways {
+    border: 1px solid var(--rule); border-left: 2px solid var(--accent);
+    background: #fff; padding: 1.5rem 1.75rem; margin: 2.5rem 0;
+}
+.takeaways h3 {
+    font-family: var(--sans); font-size: .75rem; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+    margin-bottom: .875rem;
+}
+.takeaways ul { list-style: none; }
+.takeaways li { position: relative; padding-left: 1.125rem; margin-top: .625rem; }
+.takeaways li:first-child { margin-top: 0; }
+.takeaways li::before {
+    content: ""; position: absolute; left: 0; top: .6875em;
+    width: 5px; height: 5px; background: var(--accent); border-radius: 50%;
+}
+html[data-lang="zh"] .takeaways h3 { letter-spacing: .05em; }
+
+/* -------------------------------------------------------------------- stats */
+.stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule); margin: 2.5rem 0;
+}
+.stat { background: #fff; padding: 1.5rem 1.25rem; }
+.stat .n {
+    font-family: var(--sans); font-size: 1.75rem; font-weight: 600;
+    color: var(--ink); line-height: 1; letter-spacing: -.02em;
+}
+.stat .k {
+    font-family: var(--sans); font-size: .75rem; color: var(--faint);
+    margin-top: .5rem; line-height: 1.4;
+}
+
+/* -------------------------------------------------------------------- table */
+table {
+    width: 100%; border-collapse: collapse; margin: 2rem 0;
+    font-family: var(--sans); font-size: .875rem;
+}
+th, td { padding: .625rem .75rem; text-align: left; border-bottom: 1px solid var(--rule); }
+th { font-weight: 600; color: var(--faint); font-size: .75rem;
+     text-transform: uppercase; letter-spacing: .06em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.hi td { background: var(--wash-2); }
+
+/* --------------------------------------------------------------- pull quote */
+.pull {
+    border-left: 2px solid var(--accent); padding-left: 1.5rem;
+    margin: 2.5rem 0; font-size: 1.125rem; color: var(--ink); line-height: 1.6;
+}
+
+/* ------------------------------------------------------------------ foot */
+.foot {
+    border-top: 1px solid var(--rule); padding: 2.5rem 0 5rem;
+    font-family: var(--sans); font-size: .875rem; color: var(--faint);
+}
+.foot a { color: var(--accent); text-decoration: none; }
+.foot a:hover { text-decoration: underline; }
+.links { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+
+/* ------------------------------------------------------------- entrance */
+/* Everything starts visible. The class that hides it is added by script, so a
+   reader without JS gets the whole page rather than a blank one. */
+.reveal { opacity: 0; transform: translateY(12px); }
+.reveal.in {
+    opacity: 1; transform: none;
+    transition: opacity .7s cubic-bezier(.2,.6,.2,1),
+                transform .7s cubic-bezier(.2,.6,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal, .reveal.in { opacity: 1; transform: none; transition: none; }
+    .progress { transition: none; }
+}
+
+@media (max-width: 640px) {
+    .head { padding: 3rem 0 2.5rem; }
+    .head h1 { font-size: 1.75rem; }
+    .standfirst { font-size: 1.0625rem; }
+    figure { margin: 2rem -1.5rem; }
+    .lede::first-letter { font-size: 2.75rem; }
+}
+
+/* ------------------------------------------------------- bilingual switching */
+/* Both languages are in the document. CSS hides the one that is not selected, so
+   the toggle costs no request and nothing reflows beyond the text itself. With
+   JavaScript off the default attribute on <html> still resolves to one language
+   rather than showing both. */
+html[data-lang="en"] [lang="zh"],
+html[data-lang="zh"] [lang="en"] { display: none; }
+
+html[data-lang="zh"] body {
+    font-family: var(--serif-zh);
+    line-height: 1.9;          /* CJK glyphs are denser; they need more leading */
+    font-size: 1.0625rem;
+}
+/* A drop cap on a Chinese character looks like a mistake, not a flourish. */
+html[data-lang="zh"] .lede::first-letter {
+    float: none; font-size: inherit; padding: 0; font-weight: inherit;
+}
+html[data-lang="zh"] .head h1 { letter-spacing: 0; line-height: 1.4; }
+html[data-lang="zh"] .pull { font-size: 1.0625rem; }
+
+.langswitch {
+    position: fixed; top: 1.25rem; right: 1.25rem; z-index: 90;
+    display: flex; font-family: var(--sans); font-size: .75rem;
+    border: 1px solid var(--rule); border-radius: 2px;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(6px);
+}
+.langswitch button {
+    appearance: none; border: 0; background: none; cursor: pointer;
+    padding: .375rem .625rem; color: var(--faint);
+    font: inherit; letter-spacing: .04em;
+}
+.langswitch button + button { border-left: 1px solid var(--rule); }
+.langswitch button[aria-pressed="true"] { color: var(--ink); font-weight: 600; }
+.langswitch button:hover { color: var(--accent); }
+
+@media (max-width: 640px) {
+    .langswitch { top: auto; bottom: 1rem; right: 1rem; }
+}

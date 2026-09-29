@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="assets/mark.svg">
+  <meta name="theme-color" content="#101315">
+  <link rel="canonical" href="https://autodatabench.com/">
+<meta name="description" content="AutoDataBench evaluates whether agents can write executable training tasks that pass the checks a data production pipeline would apply, one task at a time.">
+  <title>AutoDataBench — Can agents write the data?</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="AutoDataBench home"><img class="brand-mark" src="assets/mark.svg" alt="" width="28" height="28"><span>AutoDataBench</span></a>
+      <nav aria-label="Main navigation">
+        <a href="#question">Question</a><a href="#method">Method</a><a href="#results">Results</a><a href="#benchmark">Benchmark</a>
+      </nav>
+      <a class="nav-code" href="https://github.com/StarDewXXX/AutoDataBench" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero shell" id="top" aria-labelledby="hero-title">
+      <div class="hero-topline"><span class="eyebrow">A benchmark for autonomous data production</span><span class="status"><span></span> Research preprint</span></div>
+      <div class="hero-grid">
+        <div>
+          <h1 id="hero-title">AutoData<span>Bench</span></h1>
+          <p class="hero-question">Can agents write the data that feeds the self-improvement loop?</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="blog.html">Read the blog <span aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="paper.pdf">Paper <span aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="https://github.com/StarDewXXX/AutoDataBench" target="_blank" rel="noopener noreferrer">Code <span aria-hidden="true">↗</span></a>
+            <a class="button button-quiet" href="https://huggingface.co/datasets/LordNoah/AutoDataBench" target="_blank" rel="noopener noreferrer">Data <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="One original task and a record of model behavior become one new task, then a quality check produces a score">
+          <div class="visual-label">THE UNIT OF EVALUATION</div>
+          <div class="visual-row"><span class="visual-id">01 / INPUT</span><span>Original task<br><small>+ target model attempts</small></span></div>
+          <div class="visual-link" aria-hidden="true">↓</div>
+          <div class="visual-row visual-focus"><span class="visual-id">02 / AUTHOR</span><span>Agent writes<br><small>one new executable task</small></span></div>
+          <div class="visual-link" aria-hidden="true">↓</div>
+          <div class="visual-row"><span class="visual-id">03 / ACCEPT</span><span>Run and check<br><small>before any training</small></span></div>
+          <div class="visual-caption">One delivered artifact. One evidence-based verdict.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="finding-band" aria-label="Key findings">
+      <div class="shell finding-grid">
+        <div><span class="finding-number">24</span><span class="finding-label">original tasks<br>across three suites</span></div>
+        <div><span class="finding-number">5</span><span class="finding-label">author agents<br>against one target model</span></div>
+        <div><span class="finding-number">18.4<span class="unit">/100</span></span><span class="finding-label">highest score<br>at 45 minutes per task</span></div>
+        <div class="finding-takeaway"><span class="eyebrow">The central finding</span><strong>Agents can write tasks that recreate decisions the target model struggled with. They struggle to set task difficulty.</strong></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="question">
+      <div class="section-heading"><span class="eyebrow">01 / THE QUESTION</span><h2>What would it take to create agentic training tasks without human task authors?</h2></div>
+      <div class="two-column">
+        <p class="lead">Agentic training depends on executable tasks: an environment, an instruction, and a verifier that can tell whether the work was done. Running a model on those tasks produces the trajectories used for training. Today, people still set the standard and check what a task generator produces.</p>
+        <div class="copy"><p>AutoDataBench isolates one part of that job. An author agent reads an existing task and a record of the target model attempting it, then writes one <em>different</em> executable task for the same suite.</p><p>We evaluate that delivery against the kinds of acceptance checks widely used in training-data production: is it valid and new, at a useful difficulty, and aimed at the intended behavior? These checks happen <em>before</em> any training run. A later training score cannot tell us what this particular task contributed to a batch.</p></div>
+      </div>
+      <a class="inline-link" href="blog.html">Read the longer explanation <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <section class="section section-muted" id="method">
+      <div class="shell">
+        <div class="section-heading"><span class="eyebrow">02 / THE METHOD</span><h2>One task in. One new task out. Then three checks.</h2></div>
+        <p class="section-intro">A usable delivery must satisfy all three requirements. The score is their product, so a task with a disqualifying defect or the wrong difficulty scores zero.</p>
+        <div class="check-grid">
+          <article class="check-card"><span class="check-index">01</span><h3>Usable and new</h3><p>A gate rejects defects such as a verifier that never checks the result, an exposed answer, or the original task with only its surface changed.</p><span class="check-tag">GATE · 0 OR 1</span></article>
+          <article class="check-card"><span class="check-index">02</span><h3>Difficulty in range</h3><p>The target model attempts the delivered task six times. It must solve the task at least once and at most four times.</p><span class="check-tag">DIFFICULTY · 0 OR 1</span></article>
+          <article class="check-card"><span class="check-index">03</span><h3>Right behavior</h3><p>A judge checks the new attempt transcripts against a hidden rubric of behavioral modes, and must cite evidence for each mode it marks present.</p><span class="check-tag">QUALITY · 0 TO 1</span></article>
+        </div>
+        <div class="formula"><span>EPISODE SCORE</span><strong>gate <b>×</b> difficulty <b>×</b> quality</strong><span>Judged before training</span></div>
+      </div>
+    </section>
+
+    <section class="section shell" id="results">
+      <div class="section-heading"><span class="eyebrow">03 / RESULTS</span><h2>The bottleneck is difficulty calibration.</h2></div>
+      <div class="results-intro"><p>At the default 45-minute budget, no author agent scores above 20 out of 100. Only 14.6%–25.0% of deliveries land in the target model's usable pass-rate band. Among deliveries that also clear the gate, quality ranges from 0.700 to 0.967.</p><span>Scores average two episodes per original task, then average across tasks. The same target model and hidden rubrics are used for every author agent.</span></div>
+      <div class="result-panel">
+        <div class="panel-head"><div><span class="eyebrow">OVERALL SCORE</span><h3>Five author agents</h3></div><span class="panel-note">0–100 scale · higher is better</span></div>
+        <div class="score-list" role="img" aria-label="Overall scores out of 100: Kimi K3 18.4, GPT-5.6 Sol 17.7, Qwen3.8 Max 13.9, GLM-5.3 13.0, DeepSeek V4 Pro 9.7">
+          <div class="score-row"><span>kimi-k3</span><strong>18.4</strong><div class="score-track"><i style="--w:18.4%"></i></div></div>
+          <div class="score-row"><span>gpt-5.6-sol</span><strong>17.7</strong><div class="score-track"><i style="--w:17.7%"></i></div></div>
+          <div class="score-row"><span>qwen3.8-max</span><strong>13.9</strong><div class="score-track"><i style="--w:13.9%"></i></div></div>
+          <div class="score-row"><span>glm-5.3</span><strong>13.0</strong><div class="score-track"><i style="--w:13.0%"></i></div></div>
+          <div class="score-row"><span>deepseek-v4-pro</span><strong>9.7</strong><div class="score-track"><i style="--w:9.7%"></i></div></div>
+        </div>
+        <div class="chart-axis"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+      </div>
+      <div class="insight-grid">
+        <article><span class="eyebrow">WHAT FAILS</span><strong>Most tasks miss the usable difficulty band.</strong><p>They tend to be solved on every attempt or on none. A task at either end is rejected.</p></article>
+        <article><span class="eyebrow">THE SHORTCUT</span><strong>Copying the original can preserve its difficulty.</strong><p>That is why the gate rejects a surface swap: the agent must give the solver something new to work out.</p></article>
+        <article><span class="eyebrow">MORE TIME</span><strong>45 → 180 minutes raises Kimi K3's score from 18.4 to 54.1.</strong><p>It produces more usable tasks, while the cost per usable task stays roughly level.</p></article>
+      </div>
+      <details class="data-details"><summary>View the full result table <span aria-hidden="true">＋</span></summary><div class="table-scroll"><table><caption>Results from the current paper, default 45-minute budget</caption><thead><tr><th scope="col">Author agent</th><th scope="col">In band</th><th scope="col">Gate passed<br><small>given in band</small></th><th scope="col">Quality</th><th scope="col">Score</th></tr></thead><tbody><tr><th scope="row">kimi-k3</th><td>21.3%</td><td>90.0%</td><td>0.967</td><td>0.184</td></tr><tr><th scope="row">gpt-5.6-sol</th><td>21.3%</td><td>100.0%</td><td>0.833</td><td>0.177</td></tr><tr><th scope="row">qwen3.8-max</th><td>14.6%</td><td>100.0%</td><td>0.952</td><td>0.139</td></tr><tr><th scope="row">glm-5.3</th><td>21.7%</td><td>90.0%</td><td>0.700</td><td>0.130</td></tr><tr><th scope="row">deepseek-v4-pro</th><td>25.0%</td><td>41.7%</td><td>0.931</td><td>0.097</td></tr></tbody></table></div></details>
+    </section>
+
+    <section class="section section-muted" id="benchmark"><div class="shell"><div class="section-heading"><span class="eyebrow">04 / THE BENCHMARK</span><h2>Three suites. Different kinds of work.</h2></div><p class="section-intro">Eight original tasks come from each suite. The author agent writes a new task in that suite's own format; the target model and scoring procedure remain fixed.</p><div class="suite-grid"><article><span>01 / 08 TASKS</span><h3>Terminal-Bench 4.0</h3><p>Terminal work and software engineering</p><a href="https://www.tbench.ai/" target="_blank" rel="noopener noreferrer">Official website <span aria-hidden="true">↗</span></a></article><article><span>02 / 08 TASKS</span><h3>Terminal-Bench-Science</h3><p>Scientific computing</p><a href="https://www.terminal-bench-science.ai/" target="_blank" rel="noopener noreferrer">Official website <span aria-hidden="true">↗</span></a></article><article><span>03 / 08 TASKS</span><h3>AutomationBench</h3><p>Business workflows across applications</p><a href="https://github.com/zapier/AutomationBench" target="_blank" rel="noopener noreferrer">Official repository <span aria-hidden="true">↗</span></a></article></div><p class="suite-note">The ranking changes across suites. No author agent leads everywhere, so the overall score should not stand in for domain-specific performance.</p></div></section>
+
+    <section class="section shell resources"><div class="section-heading"><span class="eyebrow">05 / RESOURCES</span><h2>Read, inspect, or run the benchmark.</h2></div><div class="resource-list"><a href="paper.pdf"><span>Paper</span><small>Current preprint PDF</small><b aria-hidden="true">↗</b></a><a href="https://github.com/StarDewXXX/AutoDataBench" target="_blank" rel="noopener noreferrer"><span>Code</span><small>Harness, task subset, and rubrics</small><b aria-hidden="true">↗</b></a><a href="https://huggingface.co/datasets/LordNoah/AutoDataBench" target="_blank" rel="noopener noreferrer"><span>Data</span><small>Target-model rollouts</small><b aria-hidden="true">↗</b></a><a href="blog.html"><span>Explanation</span><small>English and Chinese research blog</small><b aria-hidden="true">↗</b></a></div><p class="resource-note">The benchmark tests whether a delivered task meets acceptance criteria. Whether tasks that pass these checks improve a model after training remains an open question.</p></section>
+  </main>
+  <footer><div class="shell footer-inner"><span>© 2026 AutoDataBench</span><a href="#top">Back to top ↑</a></div></footer>
+</body>
+</html>
